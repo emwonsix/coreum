@@ -21,29 +21,9 @@ import (
 func TestValidatorGrants(t *testing.T) {
 	const amount = 20_300_000_000
 	recipients := []string{
-		"core1x20lytyf6zkcrv5edpkfkn8sz578qg5sxnjcgv",
-		"core1up3dsjekups4y2rf376a24l2ljtkc8t9t3f4f4",
-		"core1ll9gdh5ur6gyv6swgshcm4zkkw4ttakt4ukjma",
-		"core1vsdgrlmq87qax45k32ghp94rcl3j03fw6826vt",
-		"core1k3wy8ztt2e0uq3j5deukjxu2um4a4z5tku03lr",
-		"core1py9v5f7e4aaka55lwtthk30scxhnqfa68ksrte",
-		"core1fq63eks78npnsgtja8m8nvvv5qmahqxa5klcfu",
-		"core1pe5d6fkmghjrpgk7qps3nqmsnwth7ejucqkuzj",
-		"core1zv3rz855lan7mznzlmzycf0a3tslar4lf4wrk5",
-		"core19kg8c9k6quujkh0sflp78n4jsp3vzdy8y2t2m9",
-		"core1q6mdzggk7feskx3uy90su8sqernswjpcrechnl",
-		"core16h0h2cjul7qa3np664ae9gqzrd0apcp8e7wgfw",
+		"core1xprcq3xdcuht0a8p082l3srgtwfgl57hsrj7s7",
+		"core10zh7zme4m3ash43k5cxz9ztq0refcpvemj0gaa",
 		"core1sg0gwgwumymhp0acldjpz7s3k9trgcnndqw593",
-		"core1flaz3hzgg3tjszl372lu2zz5jsmxd8pv7npmgk",
-		"core1f3v67lpkha4hhruncehqzjmt6f6t2fdnxryxvm",
-		"core1kepnaw38rymdvq5sstnnytdqqkpd0xxwz289jg",
-		"core1wj9qy0fvjawl9agz0ef3e9euw9mjfp0lnjxa5m",
-		"core19p9mc0lrlndcwejrqk0m8a4jv035prnn470sg3",
-		"core18r30dcw0063xq6zcqucldxyf27jqxmevygw4y2",
-		"core1wg7d740544xvvp75hcjd7t6p6sh3xq8t2cg9t4",
-		"core1k0rllvenwr02gvm52fh5056g5m3hly2lmhy5z2",
-		"core1wj9qy0fvjawl9agz0ef3e9euw9mjfp0lnjxa5m",
-		"core1uhrrdv6g6v9t38v4qghjucunnxyk8xt34jazzr",
 	}
 
 	requireT := require.New(t)
