@@ -1,7 +1,7 @@
 package modules
 
 // crust build/integration-tests
-// ./coreum-modules -chain-id=coreum-mainnet-1 -cored-address=full-node-curium.mainnet-1.coreum.dev:9090 -test.run=TestValidatorGrant > multisig.json
+// ./coreum-modules -chain-id=coreum-mainnet-1 -test.run=TestValidatorGrant > multisig.json
 
 import (
 	"fmt"
@@ -15,7 +15,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	integrationtests "github.com/CoreumFoundation/coreum/integration-tests"
-	"github.com/CoreumFoundation/coreum/pkg/client"
 )
 
 func TestValidatorGrants(t *testing.T) {
@@ -28,7 +27,7 @@ func TestValidatorGrants(t *testing.T) {
 
 	requireT := require.New(t)
 
-	ctx, chain := integrationtests.NewTestingContext(t)
+	_, chain := integrationtests.NewTestingContext(t)
 	codec := chain.ClientContext.Codec()
 	keyring := chain.ClientContext.Keyring()
 
@@ -59,12 +58,7 @@ func TestValidatorGrants(t *testing.T) {
 		})
 	}
 
-	acc, err := client.GetAccountInfo(ctx, chain.ClientContext, multisigInfo.GetAddress())
-	requireT.NoError(err)
-
 	txBuilder, err := chain.TxFactory().
-		WithAccountNumber(acc.GetAccountNumber()).
-		WithSequence(acc.GetSequence()).
 		WithGas(chain.GasLimitByMsgs(multisendMsg) + 10000).
 		BuildUnsignedTx(multisendMsg)
 	requireT.NoError(err)
