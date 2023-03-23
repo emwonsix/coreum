@@ -1,10 +1,11 @@
 package modules
 
 // crust build/integration-tests
-// ./coreum-modules -chain-id=coreum-mainnet-1 -test.run=TestValidatorGrant > multisig.json
+// ./coreum-modules -chain-id=coreum-mainnet-1 -test.run=TestValidatorDelegations > multisig.json
 
 import (
 	"fmt"
+	"sort"
 	"testing"
 
 	"github.com/cosmos/cosmos-sdk/crypto/keys/multisig"
@@ -12,10 +13,64 @@ import (
 	"github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
+	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/stretchr/testify/require"
 
 	integrationtests "github.com/CoreumFoundation/coreum/integration-tests"
 )
+
+func TestValidatorDelegations(t *testing.T) {
+	delegations := map[string]uint64{
+		"corevaloper1wj9qy0fvjawl9agz0ef3e9euw9mjfp0lfvac59": 10,
+		"corevaloper1wj9qy0fvjawl9agz0ef3e9euw9mjfp0lfvac50": 20,
+	}
+
+	requireT := require.New(t)
+
+	_, chain := integrationtests.NewTestingContext(t)
+	codec := chain.ClientContext.Codec()
+	keyring := chain.ClientContext.Keyring()
+
+	pubKey1 := &secp256k1.PubKey{}
+	pubKey2 := &secp256k1.PubKey{}
+	requireT.NoError(codec.UnmarshalJSON([]byte(`{"key":"A2MidxM8OUyemp7UycIVNDR2YxEomyfEYtndydqIuBsV"}`), pubKey1))
+	requireT.NoError(codec.UnmarshalJSON([]byte(`{"key":"A3sqCkVWPIHZ64JWwd3rM7Qxj2vjsDfoOJ+JLn7bP4ge"}`), pubKey2))
+
+	multisigKey := multisig.NewLegacyAminoPubKey(
+		2,
+		[]types.PubKey{pubKey1, pubKey2},
+	)
+	multisigInfo, err := keyring.SaveMultisig("coreum-foundation-0", multisigKey)
+	requireT.NoError(err)
+
+	validators := make([]string, 0, len(delegations))
+	for v := range delegations {
+		validators = append(validators, v)
+	}
+	sort.Strings(validators)
+
+	msgs := make([]sdk.Msg, 0, len(delegations))
+	for _, v := range validators {
+		msgs = append(msgs, &stakingtypes.MsgDelegate{
+			DelegatorAddress: multisigInfo.GetAddress().String(),
+			ValidatorAddress: v,
+			Amount:           chain.NewCoin(sdk.NewIntFromUint64(delegations[v])),
+		})
+	}
+
+	txBuilder, err := chain.TxFactory().
+		WithGas(chain.GasLimitByManyMsgs(msgs...)). // FIXME: add sth for tx size
+		BuildUnsignedTx(msgs...)
+	requireT.NoError(err)
+
+	json, err := chain.ClientContext.TxConfig().TxJSONEncoder()(txBuilder.GetTx())
+	requireT.NoError(err)
+
+	requireT.NoError(chain.ClientContext.PrintString(fmt.Sprintf("%s\n", json)))
+}
+
+// crust build/integration-tests
+// ./coreum-modules -chain-id=coreum-mainnet-1 -test.run=TestValidatorGrant > multisig.json
 
 func TestValidatorGrants(t *testing.T) {
 	const amount = 20_300_000_000

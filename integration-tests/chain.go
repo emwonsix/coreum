@@ -104,9 +104,9 @@ func (c ChainContext) GasLimitByMsgs(msgs ...sdk.Msg) uint64 {
 	return totalGasRequired
 }
 
-// GasLimitByMultiSendMsgs calculates sum of gas limits required for message types passed and includes the FixedGas once.
+// GasLimitByManyMsgs calculates sum of gas limits required for message types passed and includes the FixedGas once.
 // It panics if unsupported message type specified.
-func (c ChainContext) GasLimitByMultiSendMsgs(msgs ...sdk.Msg) uint64 {
+func (c ChainContext) GasLimitByManyMsgs(msgs ...sdk.Msg) uint64 {
 	var totalGasRequired uint64
 	for _, msg := range msgs {
 		msgGas, exists := c.DeterministicGasConfig.GasRequiredByMessage(msg)
