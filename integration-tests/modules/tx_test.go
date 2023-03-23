@@ -62,6 +62,12 @@ func TestValidatorDelegations(t *testing.T) {
 		"corevaloper1x20lytyf6zkcrv5edpkfkn8sz578qg5sudvagj": 8000000_000_000,
 		// Ubik Capital
 		"corevaloper1q6mdzggk7feskx3uy90su8sqernswjpce8xjnp": 3000000_000_000,
+		// Allnodes
+		"corevaloper1wg7d740544xvvp75hcjd7t6p6sh3xq8tsxkqtt": 3000000_000_000,
+		// Airgap
+		"corevaloper1xprcq3xdcuht0a8p082l3srgtwfgl57h2avmsq": 5000000_000_000,
+		// huobi
+		"corevaloper1f3v67lpkha4hhruncehqzjmt6f6t2fdnua6rv9": 6000000_000_000,
 	}
 
 	requireT := require.New(t)
