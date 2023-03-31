@@ -1,8 +1,8 @@
 name: Bug Report
+  - type: textarea
 description: Report a bug encountered while using coreum ecosystem (cored, crust etc)
 labels: []
 body:
-  - type: textarea
     id: problem
     attributes:
       label: What happened?
